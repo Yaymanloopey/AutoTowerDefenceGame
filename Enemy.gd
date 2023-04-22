@@ -21,14 +21,14 @@ func _process(delta):
 	position = position.move_toward(target_position, delta * speed)
 
 func _on_Area2D_body_entered(body):
-	var saved_score = save_manager.load_score()
+	var saved_score = save_manager.load_result("SCORE")
 	if body.is_in_group("Bullet"):
 		hits += 1
 #		print(hits)
 		# If the enemy has been hit max_hits times, remove it from the scene + save new score
 		if hits >= hitpoints:
 			var new_score = hitpoints + saved_score
-			save_manager.save_score(new_score)
+			save_manager.save_result("SCORE",new_score)
 			UI.update_score_label()
 			queue_free()
 	elif body.is_in_group("AutoTower"):
