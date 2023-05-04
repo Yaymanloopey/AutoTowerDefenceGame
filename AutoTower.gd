@@ -7,15 +7,18 @@ export var rotation_speed = 5  # Add a new export variable for the rotation spee
 var target_position = Vector2.ZERO
 var closest_enemy = null
 var fire_timer = 0  # Add a new variable to keep track of time since last shot
-export var fire_rate = 0.45  # Add a new export variable for the rate of fire
+export var fire_rate = 0.5  # Add a new export variable for the rate of fire
 
 onready var bullet_scene = preload("res://Bullet.tscn")  # Add a new variable to load the Bullet scene
 
 
 func _ready():
+	set_tower_position()
+	
+	
+func set_tower_position() -> void:
 	set_position(get_viewport_rect().size / 2)
 	target_position = get_viewport_rect().size / 2
-	
 
 func _process(delta):
 	# Find all enemies in the scene
@@ -54,4 +57,5 @@ func shoot():
 	bullet.set_velocity(bullet_direction * 1000)  # Set the bullet's velocity to move it forward
 	get_parent().add_child(bullet)  # Add the bullet to the scene
 
-
+func print_hello():
+	print("hello")

@@ -12,8 +12,10 @@ onready var fire_rate = float(save_manager.load_result("ATTACK_SPEED"))  # Add a
 onready var bullet_scene = preload("res://Bullet.tscn")
 
 func _ready():
+	set_tower_position()
+	
+func set_tower_position() -> void:
 	set_position(get_viewport_rect().size / 2)
-#	target_position = get_viewport_rect().size / 2
 
 func _process(delta):
 	fire_timer+=delta

@@ -7,9 +7,8 @@ extends Node2D
 
 var game_dir = ""
 
-#func _ready():
-#	target_position = get_viewport_rect().size / 2
-#	var data_dict = {"SCORE": "0", "ATTACK_SPEED": "1", "ATTACK_SPEED_COST": "10", "ATTACK_POWER": "1","ATTACK_POWER_COST": "10", "HEALTH": "3", "HEALTH_COST": "10"}
+func _ready():
+	pass
 	
 # Called when the node enters the scene tree for the first time.
 func save_result(column_name: String, new_value: float) -> void:
@@ -18,7 +17,7 @@ func save_result(column_name: String, new_value: float) -> void:
 		print(new_value)
 	var file = File.new()
 	var path = str(game_dir)+"game_save.sav"  # Use the user:// prefix to save the file in the user data folder
-	var data_dict = {"SCORE": "0", "ATTACK_SPEED": "5", "ATTACK_SPEED_COST": "10", "ATTACK_POWER": "1","ATTACK_POWER_COST": "10", "HEALTH": "3", "HEALTH_COST": "10"}
+	var data_dict = {"POINTS": "0", "SCORE": "0", "ATTACK_SPEED": "1.5", "ATTACK_SPEED_COST": "10", "ATTACK_POWER": "1","ATTACK_POWER_COST": "10", "HEALTH": "3", "HEALTH_COST": "10", "ENEMY_HEALTH": "2", "ENEMY_HEALTH_COST": "20"}
 #	var data_dict = {}
 	if file.file_exists(path):
 		file.open(path, File.READ)
@@ -32,7 +31,7 @@ func save_result(column_name: String, new_value: float) -> void:
 	file.store_line(JSON.print(data_dict))
 	file.close()
 
-func load_result(column_name: String) -> int:
+func load_result(column_name: String) -> String:
 	var file = File.new()
 	var path = str(game_dir)+"game_save.sav"  # Use the user:// prefix to load the file from the user data folder
 	if file.file_exists(path):
@@ -43,7 +42,7 @@ func load_result(column_name: String) -> int:
 		var data_dict = file_text.result
 		file.close()
 		if column_name.to_upper() in data_dict:
-			return int(data_dict[column_name.to_upper()])
+			return str(data_dict[column_name.to_upper()])
 		else:
 			print("column name doesn't exist")
 			var default_value = load_defaults(column_name)
@@ -56,15 +55,21 @@ func load_result(column_name: String) -> int:
 func load_defaults(column_name) -> int:
 	var default_value = 0
 	if column_name.to_upper() == "ATTACK_SPEED":
-		default_value = 5
+		default_value = 1.5
 	elif column_name.to_upper() == "ATTACK_SPEED_COST" || column_name.to_upper() == "ATTACK_POWER_COST" || column_name.to_upper() == "HEALTH_COST":
 		default_value = 10
+	elif column_name.to_upper() == "ENEMY_HEALTH_COST":
+		default_value = 20
 	elif column_name.to_upper() == "SCORE":
 		default_value = 0
 	elif column_name.to_upper() == "ATTACK_POWER":
 		default_value = 1
+	elif column_name.to_upper() == "ENEMY_HEALTH":
+		default_value = 2
 	elif column_name.to_upper() == "HEALTH":
-		default_value = 3
+		default_value = 2
+	else:
+		default_value = 0
 	
 		print(column_name)
 		print(default_value)

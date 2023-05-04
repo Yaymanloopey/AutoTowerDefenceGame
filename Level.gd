@@ -3,7 +3,7 @@
 extends Node2D
 
 var enemy_timer = 1
-var enemy_spawn_delay = 0.5
+var enemy_spawn_delay = 0.60
 var enemy_scene = preload("res://Enemy.tscn")
 onready var score_label = get_node("ScoreLabel")
 
