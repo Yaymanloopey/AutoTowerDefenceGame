@@ -24,10 +24,11 @@ func _process(delta):
 	position = position.move_toward(target_position, delta * speed)
 
 func _on_Area2D_body_entered(body):
+	var damage = int(save_manager.load_result("ATTACK_POWER"))
 	var saved_score = int(save_manager.load_result("SCORE"))
 	var saved_points = int(save_manager.load_result("POINTS"))
 	if body.is_in_group("Bullet"):
-		hits += 1
+		hits += damage
 		# If the enemy has been hit max_hits times, remove it from the scene + save new score
 		if hits >= hitpoints:
 			var new_score = saved_score + 1

@@ -140,4 +140,5 @@ __meta__ = {
 
 [connection signal="resized" from="CanvasLayer/TopBorderControl" to="." method="_on_TopBorderControl_resized"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/ButtonGrid/AttackSpeedButton" to="." method="_on_AttackSpeedButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/ButtonGrid/AttackPowerButton" to="." method="_on_AttackPowerButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MarginContainer/ButtonGrid/EnemyHealthButton" to="." method="_on_EnemyHealthButton_pressed"]

@@ -10,11 +10,9 @@
 script = ExtResource( 3 )
 
 [node name="AutoTower" parent="." instance=ExtResource( 2 )]
-position = Vector2( 689.445, 30.7013 )
 
 [node name="PlayerTower" parent="." instance=ExtResource( 1 )]
 
 [node name="SaveManager" parent="." instance=ExtResource( 4 )]
-position = Vector2( 73.4099, 74.3967 )
 
 [node name="UI" parent="." instance=ExtResource( 5 )]
