@@ -1,5 +1,3 @@
-
-
 extends Node2D
 
 var enemy_timer = 1

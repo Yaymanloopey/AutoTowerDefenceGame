@@ -44,7 +44,7 @@ func load_result(column_name: String) -> String:
 		if column_name.to_upper() in data_dict:
 			return str(data_dict[column_name.to_upper()])
 		else:
-			print("column name doesn't exist")
+			print(str(column_name) + "column name doesn't exist")
 			var default_value = load_defaults(column_name)
 			return default_value
 	else:

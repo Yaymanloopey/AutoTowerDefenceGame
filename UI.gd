@@ -15,6 +15,7 @@ var points
 
 func _ready():
 	attack_speed_button_label.text = "Attack Speed (" + str(save_manager.load_result("ATTACK_SPEED_COST")) + ")"
+	attack_power_button_label.text = "Attack Power (" + str(save_manager.load_result("ATTACK_POWER_COST")) + ")"	
 	enemy_health_button_label.text = "Enemy_health (" + str(save_manager.load_result("ENEMY_HEALTH_COST")) + ")"
 	update_score_label()
 	update_points_label()
@@ -33,81 +34,76 @@ func update_points_label():
 	points_label.text = "Points: " + str(points)
 
 func _on_AttackSpeedButton_pressed():
-	#UPDATING THE ATTACK SPEED COST
-	var attack_speed_cost = int(save_manager.load_result("ATTACK_SPEED_COST"))
-	var current_points = int(save_manager.load_result("POINTS"))
-	if attack_speed_cost < current_points:
-		update_attack_speed_cost()
-#		update_upgrade_cost("ATTACK_SPEED")
-		update_points_label()
-		#UPDATING THE ACTUAL ATTACK SPEED RATE
-		update_attack_speed()
-	else:
-		print("Earn More Points")
+	var skill_name = "ATTACK_SPEED"
+	update_skill_details(skill_name)
 		
-#func update_upgrade_cost(column_name: String):
-#	var current_cost = int(save_manager.load_result(column_name.to_upper()))
-#	print("Current Cost "+ str(current_cost))
-#	var new_cost = int(current_cost)*1.5
-#	print("New Cost "+ str(current_cost))
-#	save_manager.save_result(column_name.to_upper(), new_cost)
-#	var saved_points = int(save_manager.load_result("POINTS"))
-#	var new_points = saved_points - current_cost
-#	save_manager.save_result("POINTS",new_points)
-#
-#	if column_name.to_upper() == "ATTACK_SPEED":
-#		attack_speed_button_label.text = "Attack Speed (" + str(new_cost) + ")"
-#	elif column_name.to_upper() == "ENEMY_HEALTH":
-#		enemy_health_button_label.text = "Enemy Health (" + str(new_cost) + ")"
-#	elif column_name.to_upper() == "ATTACK_POWER":
-#		attack_power_button_label.text = "Attack Power (" + str(new_cost) + ")"
-		
-func update_attack_speed_cost():
-	var attack_speed_cost = int(save_manager.load_result("ATTACK_SPEED_COST"))
-	var new_attack_speed_cost = int(attack_speed_cost)*2
-	save_manager.save_result("ATTACK_SPEED_COST", new_attack_speed_cost)
-	attack_speed_button_label.text = "Attack Speed (" + str(new_attack_speed_cost) + ")"
-	var saved_points = int(save_manager.load_result("POINTS"))
-	var new_points = saved_points - attack_speed_cost
-	save_manager.save_result("POINTS",new_points)
-	
-func update_attack_speed():
-	var attack_speed = float(save_manager.load_result("ATTACK_SPEED"))
-	print("Attack Speed: "+ str(attack_speed))
-	var new_attack_speed = float(attack_speed)*0.95
-	print("new attack speed: " + str(new_attack_speed))
-	save_manager.save_result("ATTACK_SPEED", new_attack_speed)
-	player_tower.fire_rate = new_attack_speed
 	
 func _on_EnemyHealthButton_pressed():
-	#UPDATING THE ENEMY HEALTH COST
-	var enemy_health_cost = int(save_manager.load_result("ENEMY_HEALTH_COST"))
+	var skill_name = "ENEMY_HEALTH"
+	update_skill_details(skill_name)
+
+func _on_AttackPowerButton_pressed():
+	var skill_name = "ATTACK_POWER"
+	update_skill_details(skill_name)
+
+func update_skill_details(skill_name: String):
+	#initiating variables
+	var skill_cost = 0
+	#defining dynamic skill cost string
+	var skill_cost_string = str(skill_name) + "_COST" 
 	var current_points = int(save_manager.load_result("POINTS"))
-	if enemy_health_cost < current_points:
-		update_enemy_health_cost()
-#		update_upgrade_cost("ENEMY_HEALTH")
+	
+	skill_cost = int(save_manager.load_result(skill_cost_string))
+			
+	if skill_cost < current_points:
+		update_skill_cost(skill_name, skill_cost_string)
+		update_skill_stats(skill_name)
 		update_points_label()
-		#UPDATING THE ACTUAL ATTACK SPEED RATE
-		update_enemy_health()
 	else:
 		print("Earn More Points")
-		
-func update_enemy_health_cost():
-	var enemy_health_cost = int(save_manager.load_result("ENEMY_HEALTH_COST"))
-	var new_enemy_health_cost = int(enemy_health_cost)*2
-	save_manager.save_result("ENEMY_HEALTH_COST", new_enemy_health_cost)
-	enemy_health_button_label.text = "Enemy Health (" + str(new_enemy_health_cost) + ")"
+
+func update_skill_cost(skill_name: String, skill_cost_string: String):
+	#Intiating variables to be used
+	var current_skill_cost = 0
+	var new_skill_cost = 0
+	var skill_button_label = str(skill_name) + "_button_label"
+	var skill_label_text = ""
+	#getting the current cost of the skill being updated 
+	current_skill_cost = int(save_manager.load_result(skill_cost_string))
+	#Multiply cost by 2
+	new_skill_cost = current_skill_cost*2
+	#save the new skill cost to the file
+	save_manager.save_result(skill_cost_string, new_skill_cost)
+	
+	# Updating label
+	if skill_name == "ENEMY_HEALTH":
+		enemy_health_button_label.text = "Enemy Health (" + str(new_skill_cost) + ")"
+	elif skill_name == "ATTACK_POWER":
+		attack_power_button_label.text = "Attack Power (" + str(new_skill_cost) + ")"
+	elif skill_name == "ATTACK_SPEED":
+		attack_speed_button_label.text = "Attack Speed (" + str(new_skill_cost) + ")"
+	
 	var saved_points = int(save_manager.load_result("POINTS"))
-	var new_points = saved_points - enemy_health_cost
+	var new_points = saved_points - current_skill_cost
 	save_manager.save_result("POINTS",new_points)
 
-func update_enemy_health():
-	var enemy_health = float(save_manager.load_result("ENEMY_HEALTH"))
-	print("Enemy Health: "+ str(enemy_health))
-	var new_enemy_health = int(enemy_health)+1
-	print("new enemy health: " + str(new_enemy_health))
-	save_manager.save_result("ENEMY_HEALTH", new_enemy_health)
-	player_tower.fire_rate = new_enemy_health
+func update_skill_stats(skill_name: String):
+	var skill_stat = float(save_manager.load_result(skill_name))
+	var new_skill_stat = float(0)
+	print("Current "+ str(skill_name) + ": " + str(skill_stat)) 
+	
+	if skill_name == "ENEMY_HEALTH":
+		new_skill_stat = int(skill_stat) + 1
+	elif skill_name == "ATTACK_POWER":
+		new_skill_stat = int(skill_stat) + 1
+	elif skill_name == "ATTACK_SPEED":
+		new_skill_stat = float(skill_stat)*0.95
+	
+	print("New "+ str(skill_name) + ": " + str(new_skill_stat))
+	
+	save_manager.save_result(skill_name, new_skill_stat)
+	
+#	player_tower.fire_rate = new_enemy_health
 
 func _on_TopBorderControl_resized():
 	var top_border = get_node("CanvasLayer/TopBorderControl/TopBorder")
@@ -121,3 +117,6 @@ func _on_TopBorderControl_resized():
 		auto_tower.set_tower_position()
 	if player_tower != null:
 		player_tower.set_tower_position()
+
+
+

@@ -3,11 +3,13 @@ extends KinematicBody2D
 export var speed = 1
 export var rotation_speed = 5  # Add a new export variable for the rotation speed
 
+onready var level = get_tree().get_root().get_node("Level")
+onready var save_manager = level.get_node("SaveManager")
 
 var target_position = Vector2.ZERO
 var closest_enemy = null
 var fire_timer = 0  # Add a new variable to keep track of time since last shot
-export var fire_rate = 0.5  # Add a new export variable for the rate of fire
+export onready var fire_rate = float(save_manager.load_result("ATTACK_SPEED"))  # Add a new export variable for the rate of fire
 
 onready var bullet_scene = preload("res://Bullet.tscn")  # Add a new variable to load the Bullet scene
 
