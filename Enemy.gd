@@ -31,8 +31,8 @@ func _on_Area2D_body_entered(body):
 		hits += damage
 		# If the enemy has been hit max_hits times, remove it from the scene + save new score
 		if hits >= hitpoints:
-			var new_score = saved_score + 1
-			var new_points = hitpoints + saved_points
+			var new_score = saved_score + hitpoints
+			var new_points = saved_points + hitpoints
 			save_manager.save_result("SCORE",new_score)
 			save_manager.save_result("POINTS",new_points)
 			UI.update_score_label()

@@ -1,10 +1,21 @@
 extends Node2D
 
-var enemy_timer = 1
-var enemy_spawn_delay = 0.60
-var enemy_scene = preload("res://Enemy.tscn")
-onready var score_label = get_node("ScoreLabel")
 
+var enemy_scene = preload("res://Enemy.tscn")
+var auto_tower_scene = preload("res://AutoTower.tscn")
+onready var score_label = get_node("ScoreLabel")
+onready var save_manager = get_node("SaveManager")
+onready var auto_tower_count = 1
+var enemy_timer = 1
+onready var enemy_spawn_delay = float(save_manager.load_result("ENEMY_SPAWN_DELAY"))
+
+func _ready():
+	for AT in auto_tower_count:
+		add_new_tower()
+
+func add_new_tower():
+	var auto_tower = auto_tower_scene.instance()
+	add_child(auto_tower)
 
 func _process(delta):
 	enemy_timer -= delta

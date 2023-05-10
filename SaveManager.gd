@@ -17,7 +17,7 @@ func save_result(column_name: String, new_value: float) -> void:
 		print(new_value)
 	var file = File.new()
 	var path = str(game_dir)+"game_save.sav"  # Use the user:// prefix to save the file in the user data folder
-	var data_dict = {"POINTS": "0", "SCORE": "0", "ATTACK_SPEED": "1.5", "ATTACK_SPEED_COST": "10", "ATTACK_POWER": "1","ATTACK_POWER_COST": "10", "HEALTH": "3", "HEALTH_COST": "10", "ENEMY_HEALTH": "2", "ENEMY_HEALTH_COST": "20"}
+	var data_dict = {"POINTS": "0", "SCORE": "0", "ATTACK_SPEED": "1.5", "ATTACK_SPEED_COST": "10", "ATTACK_POWER": "1","ATTACK_POWER_COST": "10", "HEALTH": "3", "HEALTH_COST": "10", "ENEMY_HEALTH": "2", "ENEMY_HEALTH_COST": "20", "ENEMY_SPAWN_DELAY": "0.80", "ENEMY_SPAWN_DELAY_COST": "10"}
 #	var data_dict = {}
 	if file.file_exists(path):
 		file.open(path, File.READ)
@@ -52,11 +52,11 @@ func load_result(column_name: String) -> String:
 		var default_value = load_defaults(column_name)
 		return default_value
 
-func load_defaults(column_name) -> int:
+func load_defaults(column_name) -> float:
 	var default_value = 0
 	if column_name.to_upper() == "ATTACK_SPEED":
 		default_value = 1.5
-	elif column_name.to_upper() == "ATTACK_SPEED_COST" || column_name.to_upper() == "ATTACK_POWER_COST" || column_name.to_upper() == "HEALTH_COST":
+	elif column_name.to_upper() == "ATTACK_SPEED_COST" || column_name.to_upper() == "ATTACK_POWER_COST" || column_name.to_upper() == "HEALTH_COST" || column_name.to_upper() == "ENEMY_SPAWN_DELAY_COST":
 		default_value = 10
 	elif column_name.to_upper() == "ENEMY_HEALTH_COST":
 		default_value = 20
@@ -68,6 +68,8 @@ func load_defaults(column_name) -> int:
 		default_value = 2
 	elif column_name.to_upper() == "HEALTH":
 		default_value = 2
+	elif column_name.to_upper() == "ENEMY_SPAWN_DELAY":
+		default_value = 0.8
 	else:
 		default_value = 0
 	

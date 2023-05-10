@@ -9,6 +9,7 @@ onready var points_label = get_node("CanvasLayer/ScoreLabelControl/ScoreGrid/Poi
 onready var attack_speed_button_label = get_node("CanvasLayer/MarginContainer/ButtonGrid/AttackSpeedButton")
 onready var attack_power_button_label = get_node("CanvasLayer/MarginContainer/ButtonGrid/AttackPowerButton")
 onready var enemy_health_button_label = get_node("CanvasLayer/MarginContainer/ButtonGrid/EnemyHealthButton")
+onready var enemy_frequency_button_label = get_node("CanvasLayer/MarginContainer/ButtonGrid/EnemyFrequencyButton")
 
 var score
 var points
@@ -16,7 +17,8 @@ var points
 func _ready():
 	attack_speed_button_label.text = "Attack Speed (" + str(save_manager.load_result("ATTACK_SPEED_COST")) + ")"
 	attack_power_button_label.text = "Attack Power (" + str(save_manager.load_result("ATTACK_POWER_COST")) + ")"	
-	enemy_health_button_label.text = "Enemy_health (" + str(save_manager.load_result("ENEMY_HEALTH_COST")) + ")"
+	enemy_health_button_label.text = "Enemy Health (" + str(save_manager.load_result("ENEMY_HEALTH_COST")) + ")"
+	enemy_frequency_button_label.text = "Enemy Frequency (" + str(save_manager.load_result("ENEMY_SPAWN_DELAY_COST")) + ")"
 	update_score_label()
 	update_points_label()
 
@@ -46,6 +48,13 @@ func _on_AttackPowerButton_pressed():
 	var skill_name = "ATTACK_POWER"
 	update_skill_details(skill_name)
 
+func _on_AutoTowerButton_pressed():
+	level.add_new_tower()
+
+func _on_EnemyFrequencyButton_pressed():
+	var skill_name = "ENEMY_SPAWN_DELAY"
+	update_skill_details(skill_name)
+
 func update_skill_details(skill_name: String):
 	#initiating variables
 	var skill_cost = 0
@@ -71,7 +80,10 @@ func update_skill_cost(skill_name: String, skill_cost_string: String):
 	#getting the current cost of the skill being updated 
 	current_skill_cost = int(save_manager.load_result(skill_cost_string))
 	#Multiply cost by 2
-	new_skill_cost = current_skill_cost*2
+	if skill_name == 'ENEMY_SPAWN_DELAY':
+		new_skill_cost = current_skill_cost * 1.5
+	else:
+		new_skill_cost = current_skill_cost*2
 	#save the new skill cost to the file
 	save_manager.save_result(skill_cost_string, new_skill_cost)
 	
@@ -82,6 +94,8 @@ func update_skill_cost(skill_name: String, skill_cost_string: String):
 		attack_power_button_label.text = "Attack Power (" + str(new_skill_cost) + ")"
 	elif skill_name == "ATTACK_SPEED":
 		attack_speed_button_label.text = "Attack Speed (" + str(new_skill_cost) + ")"
+	elif skill_name == "ENEMY_SPAWN_DELAY":
+		enemy_frequency_button_label.text = "Enemy Frequency (" + str(new_skill_cost) + ")"
 	
 	var saved_points = int(save_manager.load_result("POINTS"))
 	var new_points = saved_points - current_skill_cost
@@ -98,7 +112,8 @@ func update_skill_stats(skill_name: String):
 		new_skill_stat = int(skill_stat) + 1
 	elif skill_name == "ATTACK_SPEED":
 		new_skill_stat = float(skill_stat)*0.95
-	
+	elif skill_name == "ENEMY_SPAWN_DELAY":
+		new_skill_stat = float(skill_stat)*0.95
 	print("New "+ str(skill_name) + ": " + str(new_skill_stat))
 	
 	save_manager.save_result(skill_name, new_skill_stat)
@@ -117,6 +132,5 @@ func _on_TopBorderControl_resized():
 		auto_tower.set_tower_position()
 	if player_tower != null:
 		player_tower.set_tower_position()
-
 
 
